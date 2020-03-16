@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoComplete</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
+    <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="/jquery/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+                <a class="navbar-brand" href="#">AutoComplete Demo</a>
+              </nav>
+    <div class="ui-widget nav justify-content-center" style="margin-top: 10%;">
+        <div class="form-group" style="width:50%;">
+                <label for="tags" class="text-center"><h3>AutoComplete</h3></label><br>
+                <input type="text" class="form-control" id="tags" placeholder="Search Here...." style="height:50%;">
+        </div>
+      </div>
+     <script>
+    $(document).ready( function() {
+       $("#tags").autocomplete({
+           source:function(req,res){
+               $.ajax({
+                url:'/auto',
+                method:'post',
+                dataType:'json',
+                data:{'auto':req.term},
+                success:function(data){ 
+                    var x = new Array();
+                        $.each(data.data,(index,values)=>{
+                             x.push({'value':values.name});
+                     });
+                     res(x)
+                 },
+                 error:function(){
+                     alert('server error occured')
+                 }
+               });
+           }
+       });
+});
+
+     </script>
+</body>
+</html>
